@@ -112,7 +112,64 @@ LOCAL_INTENTS = [
     # ── Time ──────────────────────────────────────────────────────────────────
     (r"\b(what('s|s| is)\s+the\s+time|current\s+time|time\s+now)\b",
         "get_time", lambda m: {}),
+
+    # ── Capabilities ──────────────────────────────────────────────────────────
+    (r"\b(what\s+can\s+you\s+do|what\s+are\s+your\s+(features|capabilities|abilities|skills)|help|what\s+do\s+you\s+support|show\s+me\s+what\s+you\s+can\s+do)\b",
+        "show_capabilities", lambda m: {}),
+
+    # ── News headlines ────────────────────────────────────────────────────────
+    (r"\b(latest|today'?s?|current|breaking|top)\s+news\b",
+        "get_news", lambda m: {"category": "general"}),
+    (r"\bnews\s+headlines?\b",
+        "get_news", lambda m: {"category": "general"}),
+    (r"\b(what'?s?\s+happening|what'?s?\s+in\s+the\s+news)\b",
+        "get_news", lambda m: {"category": "general"}),
+    (r"\b(tech|technology)\s+news\b",
+        "get_news", lambda m: {"category": "technology"}),
+    (r"\b(sports?)\s+news\b",
+        "get_news", lambda m: {"category": "sports"}),
+    (r"\b(business|finance|market)\s+news\b",
+        "get_news", lambda m: {"category": "business"}),
+    (r"\b(entertainment|bollywood|hollywood)\s+news\b",
+        "get_news", lambda m: {"category": "entertainment"}),
+
+    # ── Screen reading ────────────────────────────────────────────────────────
+    (r"\b(read\s+(the\s+)?(screen|this|that|what'?s?\s+on\s+(the\s+)?screen))\b",
+        "read_screen", lambda m: {"question": ""}),
+    (r"\b(what\s+(does\s+it\s+say|is\s+written|is\s+on\s+the\s+screen|can\s+you\s+see))\b",
+        "read_screen", lambda m: {"question": ""}),
+    (r"\b(read\s+(this|that)\s+(article|page|document|text|email|message|file))\b",
+        "read_screen", lambda m: {"question": "Read and summarise the main content visible."}),
+    (r"\bwhat\s+does\s+this\s+(say|mean|contain)\b",
+        "read_screen", lambda m: {"question": "What does the content on screen say?"}),
+    (r"\bsummarise\s+(the\s+)?(screen|this|what'?s?\s+on\s+(the\s+)?screen)\b",
+        "read_screen", lambda m: {"question": "Summarise the content visible on screen in 2-3 sentences."}),
 ]
+
+# ─── Full capabilities answer ─────────────────────────────────────────────────
+CAPABILITIES_ANSWER = f"""Here's everything I can do for you:
+
+Apps — open Chrome, VS Code, WhatsApp, Spotify, Discord, Notepad, Calculator, File Explorer, VLC, Zoom, Teams, Paint, and Apple Music.
+
+Web — search Google, open any website.
+
+WhatsApp — send messages to any contact by voice.
+
+Media — play, pause, next track, previous track, and control volume.
+
+System — volume up and down, scroll up and down, take a screenshot, shutdown, and restart.
+
+News — ask for the latest news, tech news, sports news, business news, or entertainment news and I'll read the top headlines.
+
+Screen Reading — say read the screen or what does this say, and I'll read whatever is visible on your screen.
+
+Modes — switch to Gesture Mode to control your mouse with hand movements, or Counsellor Mode for emotional support.
+
+Weather and Time — just ask and I'll tell you instantly.
+
+To exit — just say bye bye and I'll shut everything down.
+
+And for anything else, just ask me naturally and I'll do my best to help!"""
 
 
 def local_intent_parse(text: str) -> dict | None:

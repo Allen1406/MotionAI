@@ -452,7 +452,7 @@ class MotionAIWindow(QMainWindow):
                     spoken = self._quick_reply(local_action, text)
 
                     # Weather and time actions publish their own response
-                    if local_action["type"] in ("get_weather","get_time"):
+                    if local_action["type"] in ("get_weather","get_time","show_capabilities","get_news","read_screen"):
                         self._executor.execute(local_action)
                         return
 

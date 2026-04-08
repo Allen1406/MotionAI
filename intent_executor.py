@@ -51,8 +51,11 @@ class IntentExecutor:
             "mode_change":     self._mode_change,
             "media_control":   self._media_control,
             "media_play_song": self._media_play_song,
-            "get_weather":     self._get_weather,
-            "get_time":        self._get_time,
+            "get_weather":       self._get_weather,
+            "get_time":          self._get_time,
+            "show_capabilities": self._show_capabilities,
+            "get_news":          self._get_news,
+            "read_screen":       self._read_screen,
         }
 
         handler = handlers.get(t)
@@ -156,6 +159,39 @@ class IntentExecutor:
         self.bus.publish(Events.ASSISTANT_RESPONSE, {"text": answer})
         self.bus.publish(Events.TTS_SPEAK, {"text": answer})
         return "Time fetched"
+
+    def _show_capabilities(self, p: dict) -> str:
+        from llm_client import CAPABILITIES_ANSWER
+        self.bus.publish(Events.ASSISTANT_RESPONSE, {"text": CAPABILITIES_ANSWER})
+        self.bus.publish(Events.TTS_SPEAK, {"text": CAPABILITIES_ANSWER})
+        return "Capabilities shown"
+
+    def _get_news(self, p: dict) -> str:
+        from services.news import build_headlines_answer
+        category = p.get("category", "general")
+        self.bus.publish(Events.ASSISTANT_RESPONSE,
+            {"text": f"Fetching {category} news..."})
+        # Run in thread so it doesn't block
+        import threading
+        def fetch():
+            answer = build_headlines_answer(category=category, count=5)
+            self.bus.publish(Events.ASSISTANT_RESPONSE, {"text": answer})
+            self.bus.publish(Events.TTS_SPEAK, {"text": answer})
+        threading.Thread(target=fetch, daemon=True).start()
+        return "Fetching news"
+
+    def _read_screen(self, p: dict) -> str:
+        from services.screen_reader import read_screen
+        question = p.get("question", "")
+        self.bus.publish(Events.ASSISTANT_RESPONSE,
+            {"text": "Reading your screen..."})
+        import threading
+        def do_read():
+            result = read_screen(question=question)
+            self.bus.publish(Events.ASSISTANT_RESPONSE, {"text": result})
+            self.bus.publish(Events.TTS_SPEAK, {"text": result})
+        threading.Thread(target=do_read, daemon=True).start()
+        return "Reading screen"
 
     # ── File System ───────────────────────────────────────────────────────────
     def _open_file(self, p: dict) -> str:

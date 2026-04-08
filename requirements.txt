@@ -15,4 +15,5 @@ numpy>=1.24.0
 Pillow>=10.0.0
 python-dotenv>=1.0.0
 pygame>=2.5.0
+pytesseract>=0.3.10
 pyinstaller>=6.0.0
