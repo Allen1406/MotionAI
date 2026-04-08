@@ -1,0 +1,40 @@
+"""
+core/config.py — MotionAI settings
+"""
+
+import os
+
+USER_NAME    = "Allen"
+DEFAULT_CITY = "Pune"
+
+GROQ_API_KEY     = os.getenv("GROQ_API_KEY",     "YOUR_GROQ_API_KEY_HERE")
+LLM_MODEL        = "llama-3.1-8b-instant"
+LLM_MAX_TOKENS   = 512
+LLM_TEMPERATURE  = 0.7
+COUNSELLOR_MODEL = "llama-3.1-8b-instant"
+COUNSELLOR_TEMP  = 0.85
+
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "OPEN_WEATHERAPI_KEY")
+
+NEWS_API_KEY = os.getenv("NEWS_API_KEY", "08567b9eadb54733925743e0aab194d6")
+
+WAKE_PHRASE = "hello"
+MIC_INDEX   = 2
+
+ELEVENLABS_API_KEY  = os.getenv("ELEVENLABS_API_KEY",  "ELEVENLABS_API_KEY")
+ELEVENLABS_VOICE_ID = os.getenv("ELEVENLABS_VOICE_ID", "ELEVENLABS_VOICE_ID")
+USE_ELEVENLABS = (
+    ELEVENLABS_API_KEY  not in ("", "YOUR_ELEVENLABS_API_KEY_HERE") and
+    ELEVENLABS_VOICE_ID not in ("", "YOUR_VOICE_ID_HERE")
+)
+
+TTS_ENGINE = "pyttsx3"
+TTS_RATE   = 175
+TTS_VOLUME = 0.95
+
+GESTURE_CAMERA_INDEX = 0
+GESTURE_SENSITIVITY  = 0.7
+GESTURE_SCROLL_SPEED = 20
+
+APP_PATHS = {
+    "chrome":      r"C:\Program Files\Google\Chrome\Application\chrome.exe",
